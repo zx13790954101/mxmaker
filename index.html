@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>智维·选灯宝</title>
+    <!--清除个浏览器默认样式不统一-->
+    <link rel="stylesheet" href="./static/normalize.css/normalize.css">
+    <!--animate动画效果-->
+    <link rel="stylesheet" href="./static/Animate/animate.min.css">
+    <link rel="stylesheet" href="./static/swiper/swiper-3.4.2.min.css">
+    <!--iconfont图标-->
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_391051_2m2v9fxnzqsyk3xr.css">
+    <link rel="stylesheet" href="./static/reset/reset.css">
+    <!--加载动画-->
+    <link rel="stylesheet" href="./static/loader/css/loaders.css">
+    <script src="static/qrCode/qrcode.min.js"></script>
+    <!--<script src="static/html2canvas/dist/html2canvas.min.js"></script>
+    <script src="static/html2canvas/dist/html2canvas.svg.min.js"></script>-->
+    <script>
+      var globalPath='/peidengInterface';
+      var sharePath='http://192.168.1.10:8888'+globalPath;
+      /*生产环境配置*/
+      /*var globalPath='/PeidengInterface';
+      var sharePath='http://j.zwdeng.cn/'+globalPath;*/
+    </script>
+  </head>
+  <body>
+    <!-- loading动画 -->
+    <div id="myLoading" class="my_loading_box" style="display: none;">
+      <div class="my_loading">
+        <img src="static/images/extra/loading.svg" alt="" >
+      </div>
+    </div>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+
+  </body>
+</html>
