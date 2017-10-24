@@ -1,0 +1,33 @@
+@charset "utf-8";
+/*更改插件默认样式属性*/
+.el-tabs__active-bar{
+  background-color: #ffa538;
+}
+.swiper-pagination-bullet-active{
+  background: #ffa538 !important;
+}
+/*.el-tabs__item{
+  color: #ffa538 !important;
+}
+.el-tabs__active-bar{
+  background-color: #ffa538 !important;
+}*/
+/*更改插件默认样式属性-结束*/
+.my_loading_box{
+  position: fixed;
+  z-index:1000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+.my_loading{
+  position: absolute;
+  padding:30px;
+  border-radius: 10px;
+  background: #000000;
+  opacity:0.6;
+  transform: translate(-50%,-50%);
+  top:50%;
+  left:50%;
+}
