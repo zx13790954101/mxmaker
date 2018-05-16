@@ -1,7 +1,7 @@
 <template>
   <!-- 首页商品列表 -->
   <div class="goods-tab">
-    <switch-item :list="switchList" @curIndex="setCurIndex"></switch-item>
+    <switch-item :initIndex="1" :list="switchList" @curIndex="setCurIndex"></switch-item>
     <div class="row good_list">
       <div class=" col-xs-4 col-sm-3 col-md-2 col-lg-2 col_reset"   v-for="(item,index) in goodsList" :key="item.id" v-on:click="setCurGood(index)">
         <!--<img :src="decodeURIComponent(item.thumbImage)" class="goodImg" alt="">-->
@@ -72,7 +72,9 @@
         var that = this;
         this.$http.get(globalPath+'/GetGoodsByCheap', {
           params: {
-            userId: sessionStorage.userId || 0
+            userId: sessionStorage.userId || 0,
+            pageSize:24,
+            pageIndex:0
           }
         }).then(function (res) {
           console.log(res);
@@ -87,7 +89,9 @@
         var that = this;
         this.$http.get(globalPath+'/GetGoodsByHot', {
           params: {
-            userId: sessionStorage.userId || 0
+            userId: sessionStorage.userId || 0,
+            pageSize:24,
+            pageIndex:0
           }
         }).then(function (res) {
           console.log(res);
@@ -102,7 +106,9 @@
         var that = this;
         this.$http.get(globalPath+'/GetGoodsByNew', {
           params: {
-            userId: sessionStorage.userId || 0
+            userId: sessionStorage.userId || 0,
+            pageSize:24,
+            pageIndex:0
           }
         }).then(function (res) {
           console.log(res);

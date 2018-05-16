@@ -113,6 +113,13 @@
     </transition>
     <!--  -->
 
+    <!-- 备忘录返回配灯 -->
+    <transition name="animate-transition" enter-active-class="animated slideInRight"
+                leave-active-class="animated slideOutRight">
+      <simulate-re v-if="curPage=='simulate-re'" @toBack="setCurPage"></simulate-re>
+    </transition>
+    <!--  -->
+
     <!-- 编辑地址 -->
     <transition name="animate-transition" enter-active-class="animated fadeIn" leave-active-class="">
       <edit-address v-if="curPage=='edit-address'"></edit-address>
@@ -178,6 +185,7 @@
   import ShoppingCart from './pages/ShoppingCart.vue'
   import Scence from './pages/Scence.vue'
   import Simulate from './pages/Simulate.vue'
+  import SimulateRe from './pages/SimulateRe.vue'
   import Renovation from './pages/Renovation.vue'
   import RenovationDetail from './pages/RenovationDetail.vue'
   import RenovationDetailSwiper from './pages/RenovationDetailSwiper.vue'
@@ -218,6 +226,7 @@
       ShoppingCart,
       Scence,
       Simulate,
+      SimulateRe,
       Renovation,
       RenovationDetail,
       RenovationDetailSwiper,
@@ -337,7 +346,8 @@
 
   .no_data {
     text-align: center;
-    color: #ddd;
+    color: #999;
+    padding-top:10px;
   }
 
   ul, li {

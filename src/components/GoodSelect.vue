@@ -30,8 +30,8 @@
     <div class="good_list">
       <div class="row">
         <div class=" col-xs-6 col-sm-6 col-md-4 col-lg-4 col_reset" v-for="(item,index) in goodsList"
-             v-on:click="item.checked=!item.checked" :class="item.checked?'bg_yellow':''">
-          <good-img :url="item.thumbImage" :key="item.id"></good-img>
+             v-on:click="selectGood(index)" :class="item.checked?'bg_yellow':''">
+          <good-img :url="item.thumbImage" :noStock="item.number==0?true:false" :key="item.id"></good-img>
         </div>
       </div>
 
@@ -59,13 +59,14 @@
   export default {
     name: 'good-select',
     components: {GoodImg, MyHeader, TypeSelect},
-    props:['deleteUrl'],
+    props:['deleteUrl','oldList'],
     data () {
       return {
         searchValue: '',
         loading: false,
         showLoading: true,
         goodsList: [],
+        selectList:[],
         searchData: {
           userId: sessionStorage.userId || 0,
           pageIndex: 0,
@@ -118,6 +119,11 @@
     },
     mounted: function () {
       //console.log(sessionStorage.curGoodsList);
+      //初始化选中商品
+      if(this.oldList){
+        this.selectList=this.oldList;
+      }
+
       if (sessionStorage.curGoodsList) {
         this.goodsList = JSON.parse(sessionStorage.curGoodsList);
         sessionStorage.removeItem('curGoodsList');
@@ -159,6 +165,61 @@
       });
     },
     methods: {
+        checkSelect(){ //判断商品列表商品是否选中
+          var that=this;
+          $(this.goodsList).each(function(index2,ele2){
+            var isSame=false;
+            $(that.selectList).each(function (index,ele) {
+              if(ele2.id==ele.id) isSame=true;
+            });
+            if(isSame){
+              ele2.checked=true;
+            }else{
+              ele2.checked=false;
+            }
+          })
+        },
+        selectGood(index){
+            this.goodsList[index].checked=!this.goodsList[index].checked;
+            if(this.goodsList[index].checked){
+                this.addGood(this.goodsList[index]);
+              //this.selectList.push(this.goodsList[index]);
+            }else{
+                this.reduceGood(this.goodsList[index])
+              //if(this.selectList[index].id==this.)
+              /*$(this.selectList).each(function (index,ele) {
+                if(ele.id==this.goodsList[index].id){
+                    this.selectList.splice(index,1);
+                }
+              });*/
+            }
+        },
+      addGood(val){
+           console.log('allGood',val);
+           var add=true;
+          $(this.selectList).each(function (index,ele) {
+            if(ele.id==val.id){
+              add=false;
+              return false;
+            }
+          });
+          if(add) this.selectList.push(val);
+
+      },
+      reduceGood(val){
+          console.log('reduceGood',val);
+          var reduce=false;
+          var deleteIndex=0;
+        $(this.selectList).each(function (index,ele) {
+          if(ele.id==val.id){
+            reduce=true;
+            deleteIndex=index;
+            return false;
+          }
+        });
+        if(reduce) this.selectList.splice(deleteIndex,1);
+
+      },
       handleIconClick() {
         this.searchReset();
         this.getGoodsList();
@@ -294,13 +355,11 @@
         this.goodsList = [];
         this.showLoading = true;
       },
-      setCurGood: function (index) {
-        /*var curGood = this.goodsList[index];
-         sessionStorage.setItem('curGood', JSON.stringify(curGood));
-         bus.$emit('curPage', 'good-detail');*/
+      /*setCurGood: function (index) {
+
         this.goodsList[index].checked = true;
 
-      },
+      },*/
       answer: function () {
 
       },
@@ -312,7 +371,7 @@
           //console.log(res);
           if (typeof(res.body) != 'object') {
             //that.$message.error('没有请求到数据');
-            this.showLoading = false;
+            that.showLoading = false;
             that.loading = false
             return;
           }
@@ -326,36 +385,46 @@
           //console.log(res.body);
           that.goodsList.push(...res.body);
           that.searchData.pageIndex++;
-          that.loading = false
+          that.loading = false;
+          that.checkSelect();
+
         });
       }
     },
     computed: {
-      curGoodList: function () {
+      /*curGoodList: function () {
         var array = [];
-
-        $(this.goodsList).each(function (index, element) {
-          if (element.checked) {
-            array.push(element);
-          }
-        });
+        if(this.goodsList.length!=0){
+          $(this.goodsList).each(function (index, element) {
+            if (element.checked) {
+              array.push(element);
+            }
+          });
+        }
         console.log('computed',array);
+        this.$emit('curGoodList', array);
         return array;
-      }
+      }*/
     },
     watch:{
-      curGoodList:function(){
-        this.$emit('curGoodList', this.curGoodList);
+      selectList:function(val){
+        this.checkSelect();
+        this.$emit('curGoodList',val);
       },
-      deleteUrl:function(index){
-          console.log('delete',index);
-          var deleteId=this.curGoodList[index].id;
-          $(this.goodsList).each(function (index,ele) {
-            if(ele.id==deleteId){
-                ele.checked=false;
-                return false;
-            }
-          })
+      deleteUrl:function(url){
+        var reduce=false;
+        var deleteIndex=0;
+        $(this.selectList).each(function (index,ele) {
+          if(ele.mainImage==url){
+            reduce=true;
+            deleteIndex=index;
+            return false;
+          }
+        });
+        if(reduce) this.selectList.splice(deleteIndex,1);
+      },
+      oldList(val){
+          this.selectList=val;
       }
     }
   }

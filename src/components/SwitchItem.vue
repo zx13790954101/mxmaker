@@ -10,11 +10,16 @@
   import bus from '../assets/bus'
 export default {
   name: 'switch-item',
-  props:['list'],
+  props:['list','initIndex'],
   data () {
     return {
-      curIndex:1,
+      curIndex:0,
     }
+  },
+  mounted(){
+      if(this.initIndex){
+          this.curIndex=this.initIndex;
+      }
   },
   computed:{
       curItem(){
@@ -25,7 +30,7 @@ export default {
       curIndex(){
           this.$emit('curIndex',this.curIndex);
           this.$emit('curItem',this.curItem);
-      }
+      },
   }
 }
 </script>

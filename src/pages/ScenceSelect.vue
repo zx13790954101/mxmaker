@@ -3,15 +3,19 @@
     <!-- 顶部菜单 -->
     <header>
       <div class="menu_item_box" slot="left">
-        <div class="to_back" @click="toBack"><btn-icon text="" icon="icon-fanhui1"></btn-icon></div>
-        <div class="menu_item">
-          <type-select @curName="setSceneStyles" :title="'风格'"
-                       :selectList="sceneStylesList"></type-select>
+        <div class="to_back" @click="toBack"><btn-icon text="返回" icon="icon-fanhui1"></btn-icon></div>
+
+        <div style="display:inline-block;padding-left: 60px;">
+          <div class="menu_item">
+            <type-select @curName="setSceneStyles" :title="'风格'"
+                         :selectList="sceneStylesList"></type-select>
+          </div>
+          <div class="menu_item">
+            <type-select @curName="setSceneAreas" :title="'区域'"
+                         :selectList="SceneAreasList"></type-select>
+          </div>
         </div>
-        <div class="menu_item">
-          <type-select @curName="setSceneAreas" :title="'区域'"
-                       :selectList="SceneAreasList"></type-select>
-        </div>
+
       </div>
       <div slot="right">
         <!--loading:{{loading}}-->
@@ -346,7 +350,9 @@
   }
   .to_back{
     display: inline-block;
-
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 
   img {

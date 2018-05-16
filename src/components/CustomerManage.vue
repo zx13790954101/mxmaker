@@ -10,7 +10,7 @@
             </div>
             <div class="bottom-content">
                <div class="left">
-                  <el-checkbox  class="checkbox"  @change="checkedChange(index)" v-model="item.isDefault=='Y'?isIndeterminate:isIndeterminate2" ></el-checkbox>
+                  <el-checkbox  class="checkbox"  @change="checkedChange(index,$event)" v-model="item.isDefault=='Y'?isIndeterminate:isIndeterminate2" ></el-checkbox>
                  <span>设为默认</span>
                </div>
               <div class="right">
@@ -139,7 +139,7 @@
           });
 
         },
-        checkedChange(index){
+        checkedChange(index,event){
             var that=this;
             console.log('sssss',index);
           if(event.target.checked){
@@ -181,7 +181,7 @@
             }
           }).then(function (res) {
             if (res.body>0){
-              that.$message.error('编辑成功');
+              that.$message.success('编辑成功');
               if(isDefault){
                 that.init();}
               }

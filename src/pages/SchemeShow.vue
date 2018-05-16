@@ -6,7 +6,7 @@
       <div class="pull-right" @click="buyAll">
         <btn-icon text="购买全部" icon="icon-finished-cart"></btn-icon>
       </div>
-      <div class="pull-right" @click="toShare">
+      <div class="pull-right" @click="dialogVisible = true">
         <btn-icon text="分享" icon="icon-fenxiang"></btn-icon>
       </div>
       <div class="pull-right" @click="toEdit" style="padding-right: 18px;">
@@ -61,7 +61,20 @@
       <swiper-ver-show :planInfoList="planInfoList" :headDetail="mainDetail"
                        :headImgList="mainImgList"></swiper-ver-show>
     </div>
-
+    <!--设置分享原因 开始-->
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :modal="showModal"
+      :before-close="handleClose">
+      <el-input type="textarea" v-model="shareReason" placeholder="请输入分享理由"></el-input>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="toShare">确 定</el-button>
+  </span>
+    </el-dialog>
+    <!--设置分享原因 结束-->
     <!-- 选择分享渠道 -->
     <share :url="shareUrl" :title="''" :img="''"></share>
 
@@ -81,6 +94,8 @@
     data () {
       var curSite = JSON.parse(sessionStorage.curSite);
       return {
+        showModal:false,
+        dialogVisible:false,
         shareUrl:'',
           id:curSite.id,
         mainName: curSite.name,
@@ -161,6 +176,7 @@
 
       },
       toShare(){
+        this.dialogVisible = false;
         var that = this;
         this.$http.post(globalPath + '/SharePlanById', {userId:sessionStorage.userId,planId:that.id}, {emulateJSON: true}).then(function (res) {
 

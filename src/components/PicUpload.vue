@@ -54,7 +54,7 @@
           setTimeout(function () {
             $('#imgUpload').ajaxSubmit(function (res) {
 
-              that.$emit('url','http://7xo8yg.com1.z0.glb.clouddn.com/'+res.key);
+              that.$emit('url','http://orbi0d8g8.bkt.clouddn.com/'+res.key);
             });
           }, 300);
 

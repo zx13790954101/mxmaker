@@ -65,7 +65,7 @@
         data.id = ++this.siteId;
         data.input = 'hello world';
         data.imgList=[{
-          url:"http://7xo8yg.com1.z0.glb.clouddn.com/temp136789525111505439656118.jpg"
+          url:"http://orbi0d8g8.bkt.clouddn.com/temp136789525111505439656118.jpg"
         }];
         this.selectedSite.push(data);
         this.curIndex = this.selectedSite.length - 1;

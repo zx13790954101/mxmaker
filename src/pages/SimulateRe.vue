@@ -1,5 +1,5 @@
 <template>
-  <div class="simulate">
+  <div class="simulate-re">
     <!-- 左菜单 -->
     <div class="left_bar">
       <div class="toBack" @click="toBack">
@@ -111,7 +111,7 @@
     <!-- 选择配灯场景 -->
     <transition name="animate-transition" enter-active-class="animated slideInRight"
                 leave-active-class="animated slideOutRight">
-      <scence-select v-if="showSelect" @closeSelect="showSelect=false" @bgListChange="bgListChange"></scence-select>
+      <scence-select-re v-if="showSelect" @closeSelect="showSelect=false" @bgListChange="bgListChange"></scence-select-re>
     </transition>
     <!--返回时候等待过长，添加loading动画-->
     <div class="my_loading_box" v-if="backLoading">
@@ -130,34 +130,29 @@
   import PicUploadLess from '../components/PicUploadLess.vue'
   import Share from '../components/Share.vue'
   import GoodDetailCopy from '../pages/GoodDetailCopy.vue'
-  import ScenceSelect from '../pages/ScenceSelect.vue'
+  import ScenceSelectRe from '../pages/ScenceSelectRe.vue'
   export default {
-    name: 'simulate',
-    components: {GoodSelect, ImgControl, PicUpload, PicUploadLess, Share,GoodDetailCopy,ScenceSelect},
+    name: 'simulate-re',
+    components: {GoodSelect, ImgControl, PicUpload, PicUploadLess, Share,GoodDetailCopy,ScenceSelectRe},
     data () {
       var data={
-        list:[],
-        index:0,
+          list:[],
+          index:0,
       };
-      data.list=JSON.parse(sessionStorage.bgList).list;
-      data.index=JSON.parse(sessionStorage.bgList).index;
       var simulateRe='';
       if(sessionStorage.simulateRe){
-        simulateRe=JSON.parse(sessionStorage.simulateRe);
-        data.list.push({
-          mainImage:simulateRe.bg
-        });
+          simulateRe=JSON.parse(sessionStorage.simulateRe);
+          data.list.push({
+            mainImage:this.detecte(simulateRe.bg)
+          });
       }
       var url='';
       var curGood=sessionStorage.curGood||'';
-      var array=[];
-      if(curGood){
-        //url=(JSON.parse(curGood)).mainImage;
-        array.push(JSON.parse(curGood));
-      }
+      if(curGood) url=(JSON.parse(curGood)).mainImage;
       var that = this;
       return {
-        oldList:array,
+        oldList:simulateRe.goodList,
+        simulateReList:simulateRe.goodList,
         backLoading:false,
         sessionGoodUrl:url,
         bgList:data.list,
@@ -265,6 +260,14 @@
           }
         });
       },
+      detecte(url){
+        var mUrl = url;
+        var pattern = /http/ig;
+        if (!pattern.test(url)) {
+          mUrl = 'http://orbi0d8g8.bkt.clouddn.com/' + url;
+        }
+        return mUrl;
+      },
       bgListChange(data){
         this.userImg='';
         var that=this;
@@ -368,27 +371,27 @@
       setCurGoodList(data){
         /*var that=this;*/
         /*this.curGoodList = data;
-         var simulateRe=JSON.parse(sessionStorage.simulateRe);*/
+        var simulateRe=JSON.parse(sessionStorage.simulateRe);*/
         //var array=[];
-        /* $(data).each(function (index,ele) {
-         var same=false;
-         $(that.curGoodList).each(function (index2,ele2) {
-         if(ele.id==ele2.id){
-         same=true;
-         return false;
-         }
-         });
-         console.log(ele.id);
-         if(!same) that.curGoodList.push(ele);
-         });*/
+       /* $(data).each(function (index,ele) {
+            var same=false;
+            $(that.curGoodList).each(function (index2,ele2) {
+              if(ele.id==ele2.id){
+                same=true;
+                return false;
+              }
+            });
+            console.log(ele.id);
+            if(!same) that.curGoodList.push(ele);
+        });*/
         this.curGoodList=data;
         //that.curGoodList=array;
         //that.curGoodList.push(...array);
         /*var list=simulateRe.goodList;
-         $(this.simulateReList).each(function(index,ele){
-         //this.curGoodList.unshift(JSON.parse(sessionStorage.curGood));
-         that.curGoodList.unshift(ele);
-         });*/
+        $(this.simulateReList).each(function(index,ele){
+          //this.curGoodList.unshift(JSON.parse(sessionStorage.curGood));
+          that.curGoodList.unshift(ele);
+        });*/
 
       },
       formatTooltip(val) {
@@ -403,6 +406,7 @@
         var that=this;
         setTimeout(function () {
           that.$emit('toBack', 'main');
+          that.$emit('curPage', 'main');
         },150);
 
       },
@@ -411,7 +415,7 @@
         console.log(url);
         var deleteIndex = '';
         $(this.curGoodList).each(function(index,ele){
-          console.log(ele);
+           console.log(ele);
           if(url==ele.mainImage){
             that.curGoodList.splice(index,1);
             return;
@@ -419,15 +423,15 @@
         });
         this.deleteUrl=url;
         /*setTimeout(function () {//没有这个延迟，可能图片删除不掉，
-         $(that.curGoodList).each(function (index, ele) {
-         if (ele.mainImage == url) {
-         deleteIndex = index;
-         that.deleteUrl = index;
-         //that.curGoodList.splice(index,1);
-         return false;
-         }
-         });
-         },250);*/
+          $(that.curGoodList).each(function (index, ele) {
+            if (ele.mainImage == url) {
+              deleteIndex = index;
+              that.deleteUrl = index;
+              //that.curGoodList.splice(index,1);
+              return false;
+            }
+          });
+        },250);*/
 
         console.log(deleteIndex);
 
@@ -473,7 +477,7 @@
             that.dialogVisible = true;
             break;
           case 5:
-              that.curGoodList=[];
+            that.curGoodList=[];
             bus.$emit('clearGoodList', true);
             break;
           case 6:
@@ -492,8 +496,8 @@
       }
     },
     mounted: function () {
-        sessionStorage.removeItem('curRemark');
       var that = this;
+      this.setUrl(this.detecte(JSON.parse(sessionStorage.simulateRe).bg));
       //页面加载的时候滑块控件必须要可见，否则会初始化错误，故在页面加载完成之后再display：none
       //$('.cover').css({'z-index':21,'display':'none'});
       $(window).resize(function () {
@@ -504,13 +508,13 @@
         that.box.height = $('.swiper_box').height();
         console.log(that.box.width / that.box.height - that.userImgWidth / that.userImgHeight);
       });
+      $(window).trigger('resize');
       this.$message.closeAll();
       this.$message({
         showClose: true,
         message: '鼠标左键拖动，滚轮缩放，右键功能面板',
         duration: 3000
       });
-      $(window).trigger('resize');
       /*bus.$on('curPage',function(page){
        console.log('hello',page);
        if(page=='simulate'){
@@ -540,7 +544,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .simulate {
+  .simulateRe {
     position: fixed;
     left: 0;
     top: 0;
@@ -567,7 +571,6 @@
   }
 
   .toBack {
-    width:100px;
     cursor: pointer;
     height: 60px;
     line-height: 60px;
@@ -585,16 +588,14 @@
   }
 
   .menu_bar {
-    width:100px;
-    /*position: absolute;
+    position: absolute;
     top: 50%;
     left: 50%;
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);*/
-    overflow-y: auto;
+    transform: translate(-50%, -50%);
   }
 
   .menu_bar .iconfont {
@@ -623,8 +624,6 @@
     -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.44);
     -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.44);
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.44);
-    overflow-y:auto;
-    overflow-x:hidden;
   }
 
   .swiper_box {
@@ -651,6 +650,7 @@
     -webkit-transform: scaleX(-1);
     -o-transform: scaleX(-1);
     transform: scaleX(-1);
+    -webkit-transform: scaleX(-1);
   }
 
   .right_goods {

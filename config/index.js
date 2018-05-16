@@ -8,7 +8,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../web'),
     assetsSubDirectory: 'static',
     assetsPublicPath: './',
-    productionSourceMap: true,
+    productionSourceMap: false,
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
     // Before setting to `true`, make sure to:
@@ -30,8 +30,10 @@ module.exports = {
     proxyTable: {
       '/peidengInterface': {
         /*target: 'http://112.74.206.113:8888/maideng',*/
-        target: 'http://j.zwdeng.cn/PeidengInterface',
-  /*      target: ' http://192.168.1.81:8888/peidengInterface',*/
+        /*target: 'http://pf.zwdeng.cn/PeidengInterface',*/
+        target: 'http://pf.zwdeng.cn/PeidengInterface',
+        // target: ' http://192.168.1.138:8080/peidengInterface',
+        /*target: ' http://192.168.1.10:8888/peidengInterface',*/
         changeOrigin: true,
         pathRewrite: {
           '^/peidengInterface': ''

@@ -120,7 +120,7 @@
           this.$emit('curName','');
           this.$emit('curId','');
         }else{
-          this.$emit('curName',this.value);
+          this.$emit('curName',this.curLabel);
           this.$emit('curId',value);
         }
       },

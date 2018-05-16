@@ -5,7 +5,7 @@
     <!--<img class="good_img"  v-bind:src="url" alt="" v-on:load="setBG(this)" >-->
     <transition name="el-fade-in">
       <div  v-if="onload" class="img_box" :style="{backgroundImage:'url('+url+')'}" :class="widthMore?'width_more':''">
-        <img src="static/images/extra/usurp2_1.png" alt="">
+        <img src="static/images/extra/default4_3.png" alt="">
       </div>
     </transition>
   </div>
@@ -27,7 +27,7 @@ export default {
     img.src=this.url;
     img.onload=function(){
         that.onload=true;
-        if(img.width/img.height>2) that.widthMore=true;
+        if(img.width/img.height>4/3) that.widthMore=true;
     }
   },
   methods:{

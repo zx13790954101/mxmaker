@@ -33,6 +33,7 @@
             <div class="col-sm-6 buttom_array" :style="{ 'text-align' : 'right'}" :class="item.statusColor?'active':'disactive'">
               <el-button  @click="cancelOrder(index)">取消订单</el-button>
               <el-button @click="toPayPage(index)">去付款</el-button>
+              <el-button @click="toPirint(item.id)">去打印</el-button>
             </div>
 
           </div>
@@ -171,6 +172,10 @@
           $('.list').height(height_resize - 140);
         });
 
+      },
+      //打印
+      toPirint: function (index) {
+           window.open(printPath+"/print/web.html?id="+index);
       },
       toOrderDetail: function (index) {
         sessionStorage.setItem('MyOrderItem', JSON.stringify(this.goodsList[index]));

@@ -320,7 +320,7 @@
         var mUrl=url;
         var pattern=/http/ig;
         if(!pattern.test(url)){
-          mUrl='http://7xo8yg.com1.z0.glb.clouddn.com/'+url;
+          mUrl='http://orbi0d8g8.bkt.clouddn.com/'+url;
         }
         return mUrl;
       },

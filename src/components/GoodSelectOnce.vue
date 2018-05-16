@@ -31,7 +31,7 @@
       <div class="row">
         <div class=" col-xs-6 col-sm-6 col-md-4 col-lg-4 col_reset" v-for="(item,index) in goodsList"
              v-on:click="item.checked=!item.checked" :class="item.checked?'bg_yellow':''">
-          <good-img :url="item.thumbImage" :key="item.id"></good-img>
+          <good-img :url="item.thumbImage" :noStock="item.number==0?true:false" :key="item.id"></good-img>
         </div>
       </div>
 

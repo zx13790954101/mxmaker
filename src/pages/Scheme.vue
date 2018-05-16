@@ -28,13 +28,13 @@
             </div>
           </swiper-slide>
           <swiper-slide>
-            <div class="page_box" >
-              <scheme-mine v-if="isShow"></scheme-mine>
+            <div class="page_box" v-if="isShow">
+              <scheme-mine ></scheme-mine>
             </div>
           </swiper-slide>
           <swiper-slide>
-            <div class="page_box" >
-              <scheme-remark :searchWord="search"></scheme-remark>
+            <div class="page_box" v-if="isShow">
+              <scheme-remark :searchWord="search" ></scheme-remark>
             </div>
           </swiper-slide>
 
@@ -78,10 +78,11 @@
       });
 
       bus.$on('curPage',function (page) {
-        if(page=='scheme-edit'){
+        if(page=='main'){
             that.isShow=false;
-        }else{
-            that.isShow=true;
+            setTimeout(function () {
+              that.isShow=true;
+            },250);
         }
       });
     },
@@ -210,5 +211,9 @@
   }
   .swiper-slide{
     overflow: hidden;
+  }
+  .page_box{
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 </style>

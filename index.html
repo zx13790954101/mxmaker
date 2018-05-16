@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="./static/Animate/animate.min.css">
     <link rel="stylesheet" href="./static/swiper/swiper-3.4.2.min.css">
     <!--iconfont图标-->
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_391051_2m2v9fxnzqsyk3xr.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_391051_cppd7x26s4r96bt9.css">
     <link rel="stylesheet" href="./static/reset/reset.css">
     <!--加载动画-->
     <link rel="stylesheet" href="./static/loader/css/loaders.css">
@@ -18,10 +18,16 @@
     <script src="static/html2canvas/dist/html2canvas.svg.min.js"></script>-->
     <script>
       var globalPath='/peidengInterface';
-      var sharePath='http://192.168.1.10:8888'+globalPath;
+      var sharePath='http://192.168.1.138:8080'+globalPath;
+      var printPath='http://192.168.1.138:8080';
       /*生产环境配置*/
-      /*var globalPath='/PeidengInterface';
-      var sharePath='http://j.zwdeng.cn/'+globalPath;*/
+     /* var globalPath='/PeidengInterface';
+      var sharePath=window.location.hostname+globalPath;
+      var printPath=globalPath;*/
+      var pattern = /http/ig;
+      if (!pattern.test(sharePath)) {
+        sharePath = 'http://' + sharePath;
+      }
     </script>
   </head>
   <body>

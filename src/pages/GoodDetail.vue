@@ -11,7 +11,7 @@
         <div class="img_box" @click="showSelect=true">
           <img src="static/images/extra/go_sence_normal@2x.png" alt="">
         </div>
-        <div class="img_box" @click="toShare">
+        <div class="img_box" @click="dialogVisible = true">
           <img src="static/images/extra/share_normal@2x.png" alt="">
         </div>
         <div class="img_box" @click="collection">
@@ -182,6 +182,20 @@
         </div>
       </div>-->
     </div>
+    <!--设置分享原因 开始-->
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :modal="showModal"
+      :before-close="handleClose">
+      <el-input type="textarea" v-model="shareReason" placeholder="请输入分享理由"></el-input>
+      <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="toShare">确 定</el-button>
+  </span>
+    </el-dialog>
+    <!--设置分享原因 结束-->
     <!-- 选择分享渠道 -->
     <share :url="shareUrl" :title="''" :img="''"></share>
     <!-- 选择配灯场景 -->
@@ -204,6 +218,8 @@
     components: {GoodImg, ImgWindow, Share,ScenceSelect},
     data () {
       return {
+        showModal:false,
+        dialogVisible:false,
         showSelect:false,
         goodInfo: {},
         dialogFormVisible: false,
@@ -220,6 +236,7 @@
         bus.$emit('curPage', 'shopping-cart');
       },
       toShare(){
+        this.dialogVisible = false;
         var that = this;
         that.shareUrl='';
         this.$http.post(globalPath + '/ShareGoodById', {
@@ -445,8 +462,10 @@
       }
 
       //判断购物车有没有
-      var num = JSON.parse(localStorage.getItem("addShopcart_Array"));
-      that.shopcartNum = num.length;
+      if(localStorage.getItem("addShopcart_Array")){
+        var num = JSON.parse(localStorage.getItem("addShopcart_Array"));
+        that.shopcartNum = num.length;
+      }
     }
   }
 </script>
@@ -591,5 +610,8 @@
   .top_line{
     border-top: 1px solid #ddd;
     padding-top: 18px;
+  }
+  .v-modal{
+    z-index:-1 !important;
   }
 </style>

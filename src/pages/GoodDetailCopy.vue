@@ -445,8 +445,10 @@
       }
 
       //判断购物车有没有
-      var num = JSON.parse(localStorage.getItem("addShopcart_Array"));
-      that.shopcartNum = num.length;
+      if(localStorage.getItem("addShopcart_Array")){
+        var num = JSON.parse();
+        that.shopcartNum = num.length;
+      }
     }
   }
 </script>

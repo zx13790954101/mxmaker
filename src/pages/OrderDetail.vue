@@ -49,6 +49,7 @@
           <div>商品金额:￥{{goodsList.goodMoney}}</div>
           <div>优惠金额:￥{{goodsList.cheapMoney}}</div>
           <div>支付总金额:￥{{goodsList.orderMoney}}</div>
+          <el-button @click="toPirint(goodsList.id)">去打印</el-button>
         </div>
       </div>
     </div>
@@ -91,7 +92,10 @@
         },
         toBack:function () {
           bus.$emit('curPage' , 'main');
-        }
+        },
+        toPirint: function (index) {
+          window.open(printPath+"/print/web.html?id="+index);
+        },
       }
     }
 </script>

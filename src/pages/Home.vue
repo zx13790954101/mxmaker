@@ -8,7 +8,7 @@
     <my-swiper v-bind:bannerList="bannerList"></my-swiper>
     <!-- 场景区域 -->
     <div class="row ">
-      <div class=" col-xs-3 col-sm-2 col-md-2 col-lg-1 col_reset" v-for="item in regionList" @click="getGoodsList(item.id)">
+      <div class=" col-xs-3 col-sm-2 col-md-2 col-lg-1 col_reset" v-for="item in regionList" @click="getGoodsList(item.regionName)">
         <div class="region_box" >
           <img class="region_icon" :src="decodeURIComponent(item.enName)" alt="">
           <span class="region_word">{{decodeURIComponent(item.regionName)}}</span>
@@ -135,11 +135,11 @@
         setCurIndex:function(index){
           bus.$emit('curIndex',index);
         },
-      getGoodsList: function (id) {
+      getGoodsList: function (name) {
         var that = this;
         this.$http.get(globalPath+'/GetRegionGoods', {
           params: {
-            regionId:id,
+            regionName:name,
             pageSize:48,
             pageIndex:0,
             userId:sessionStorage.userId

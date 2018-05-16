@@ -129,7 +129,7 @@
           account:userInfo.name,
           password:userInfo.password,
           userId:userInfo.id,
-          type:0,
+          type:'投诉类',
           content:'',
           materialCode:'',
           num:'',
@@ -210,7 +210,8 @@
              that.$message({
                message:'提交成功',
                type:'success'
-             })
+             });
+             that.formReset();
            }
 
          })
@@ -247,7 +248,7 @@
           account:userInfo.name,
             password:userInfo.password,
             userId:userInfo.id,
-            type:0,
+            type:'投诉类',
             content:'',
             materialCode:'',
             num:'',

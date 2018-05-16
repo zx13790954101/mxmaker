@@ -1,10 +1,9 @@
 <template>
   <div class="scheme-mine">
     <div class="row">
-      <div v-for="(item,index) in dataList" class="reset" :class="[index%3==0?'col-xs-12':'col-xs-6']">
+      <div v-for="(item,index) in dataList" class="reset" :class="['col-xs-6']">
         <div class="item_box" @click="toDetail(index)"  @mouseenter="curIndex=index">
-          <img-limit-widther :url="detecte(item.thumbImg)" v-if="index%3==0"></img-limit-widther>
-          <img-limit :url="detecte(item.thumbImg)" v-if="index%3!=0"></img-limit>
+          <img-limit-widther :url="detecte(item.thumbImg)" ></img-limit-widther>
           <div class="item_explain_cover">
             <div class="item_explain">
               <p>{{item.name}}</p>
@@ -27,6 +26,7 @@
         </div>
 
       </div>
+      <p v-if="dataList.length==0" class="no_data"><i class="iconfont icon-kong"></i>&nbsp;"我的方案"为空，请添加方案！</p>
     </div>
   </div>
 </template>
@@ -109,7 +109,7 @@
         var mUrl = url;
         var pattern = /http/ig;
         if (!pattern.test(url)) {
-          mUrl = 'http://7xo8yg.com1.z0.glb.clouddn.com/' + url;
+          mUrl = 'http://orbi0d8g8.bkt.clouddn.com/' + url;
         }
         return mUrl;
       },
@@ -125,7 +125,7 @@
           }
         }).then(function (res) {
           var data = [];
-          this.dataList = res.body;
+          this.dataList = res.body||[];
         });
       }
     }

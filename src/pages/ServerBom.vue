@@ -21,11 +21,27 @@
       </div>
     </div>
     <div class="row good_box" v-if="curGood!=''" >
-      <div class="row">
+      <div style="display: inline-block;margin: 0 auto;position: relative;padding-left: 210px;">
+        <div class="good_profile">
+          <good-img :url="curGood.thumbUrl" ></good-img>
+        </div>
+        <div class="good_info">
+          <p class="word">物料编号：{{curGood.materialCode}}</p>
+          <p class="word">货品编号：{{curGood.typeCode}}</p>
+          <div>
+            <button class="btn btn-warning " @click="GetGoodById">查看详情</button>
+            <button class="btn btn-warning " @click="setImgUrl(curGood.strutUrl)">查看结构图</button>
+            <button class="btn btn-warning " @click="setImgUrl(curGood.detailUrl)">查看说明书</button>
+          </div>
+
+        </div>
+      </div>
+
+  <!--    <div class="row">
         <div class="col-xs-3 col-xs-offset-1 col-lg-2" @click="GetGoodById">
           <good-img :url="curGood.thumbUrl" ></good-img>
         </div>
-        <div class="col-xs-7 col-lg-8 good_info">
+        <div class="good_info">
           <p class="word">物料编号：{{curGood.materialCode}}</p>
           <p class="word">货品编号：{{curGood.typeCode}}</p>
           <div class="row">
@@ -41,7 +57,7 @@
           </div>
 
         </div>
-      </div>
+      </div>-->
 
     </div>
     <div class="good_part_list" v-if="(curGood!='')&&((curGood.partList).length!=[])">
@@ -120,6 +136,10 @@
             password: userInfo.password,
           }
         }).then(function (res) {
+            if(res.body==0){
+                that.$message.error('没有该商品！');
+                return;
+            }
           this.curGood=res.body;
          /* this.curGood.partList=[{
               code:2,
@@ -203,11 +223,20 @@
   }
   .good_box{
     padding-top:20px;
+    text-align: center;
   }
   .good_info{
-    padding-top:20px;
+    text-align: left;
+    padding: 35px;
   }
   .good_box .btn{
     margin:5px 0;
+  }
+  .good_profile{
+    width:200px;
+    height:200px;
+    position: absolute;
+    left: 0;
+    top: 0;
   }
 </style>

@@ -38,6 +38,7 @@
           <good-img :url="item.thumbImage" :noStock="item.number==0?true:false" :key="item.id"></good-img>
           <!--<i class="iconfont icon-arrDnR-fill" v-if="item.number==0"></i>-->
         </div>
+        <p v-if="goodsList.length==0&&!showLoading" class="no_data">该分类暂无商品</p>
       </div>
 
     </div>

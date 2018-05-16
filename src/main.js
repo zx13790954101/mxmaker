@@ -2,7 +2,6 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
-import VueRouter from 'vue-router'
 import ShoppingCart from './pages/ShoppingCart.vue'
 import VueResource from 'vue-resource'
 import $ from 'jquery'
@@ -26,7 +25,7 @@ import './assets/form'
 /*import  './assets/html2canvas/dist/html2canvas.min'
 import  './assets/html2canvas/dist/html2canvas.svg.min'*/
 
-Vue.use(VueRouter);
+
 Vue.use(VueAwesomeSwiper);
 Vue.use(Element);
 Vue.use(VueResource);
@@ -35,10 +34,7 @@ Vue.config.productionTip = false
 const  routes=[
   {path: '/ShoppingCart', component:ShoppingCart}
 ]
-const router = new VueRouter({
-  mode: 'history',
-  routes:routes
-})
+
 Vue.http.interceptors.push((request, next) => {
   var that=this
   //console.log(this)//此处this为请求所在页面的Vue实例
@@ -67,7 +63,7 @@ Vue.http.interceptors.push((request, next) => {
       case 500:
         bus.$message({
           showClose: true,
-          message: '服务器异常或者无法连接致网络',
+          message: '服务器异常',
           type: 'error'
         });
         break;
@@ -97,5 +93,4 @@ new Vue({
   el: '#app',
   template: '<App/>',
   components: { App },
-  router
 });

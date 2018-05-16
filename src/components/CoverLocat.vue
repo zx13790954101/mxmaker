@@ -65,7 +65,7 @@ export default {
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
     /*background-image: url(/static/images/extra/triangle.png);*/
-    background-position: right center;
+    background-position: right center ;
     background-repeat:no-repeat;
     -webkit-background-size:50%;
     background-size:50%;

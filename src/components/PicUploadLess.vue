@@ -29,7 +29,7 @@
     },
     mounted: function () {
       var that = this;
-      $('input[name=file][type=file]').change(function (e) {
+      $('input#uploadImgLess[name=file][type=file]').change(function (e) {
         if($(this).val()=='') return;
         //console.log(this.files[0].name);
         that.uploadImg(this.files[0].name)
@@ -49,11 +49,13 @@
           setTimeout(function () {
             $('#imgUploadLess').ajaxSubmit(function (res) {
               //console.log(res);
-              /*var obj = {url: 'http://7xo8yg.com1.z0.glb.clouddn.com/' + res.key};
+              /*var obj = {url: 'http://orbi0d8g8.bkt.clouddn.com/' + res.key};
               that.imgList.push(obj);
               that.imgKeys.push(res.key);
               that.$emit('imgKeys',that.imgKeys);*/
+              console.log('分享图片改变');
               that.$emit('url',res.key);
+
             });
           }, 300);
 

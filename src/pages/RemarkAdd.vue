@@ -41,10 +41,18 @@
     data () {
       var curSimulate = JSON.parse(sessionStorage.curSimulate);
       console.log('curSimulate',curSimulate);
+      var id='';
+      var remark='';
+      if(sessionStorage.curRemark){
+          id=JSON.parse(sessionStorage.curRemark).id;
+          console.log(sessionStorage.curRemark);
+          remark=JSON.parse(sessionStorage.curRemark).memo;
+      }
       return {
+        memoId:id,
         bg: curSimulate.bg,
         goodList: curSimulate.goodList,
-        remark: '',
+        remark: remark,
         imgWidth: 0,
         imgHeight: 0,
         conWidth: 0,
@@ -82,7 +90,7 @@
         var mUrl = url;
         var pattern = /http/ig;
         if (!pattern.test(url)) {
-          mUrl = 'http://7xo8yg.com1.z0.glb.clouddn.com/' + url;
+          mUrl = 'http://orbi0d8g8.bkt.clouddn.com/' + url;
         }
         return mUrl;
       },
@@ -108,24 +116,49 @@
             ]
           };
           console.log(data);
-        this.$http.post(globalPath+'/ManageMemo',{
-            model:'add',
-            userId:sessionStorage.userId,
-            memoJson:encodeURIComponent(JSON.stringify(data))
-        },{emulateJSON: true}).then(function (res) {
-            console.log(res);
-            if(res.body==1000){
+          if(this.memoId){
+            this.$http.post(globalPath+'/ManageMemo',{
+              model:'edit',
+              userId:sessionStorage.userId,
+              memoId:that.memoId,
+              memoJson:encodeURIComponent(JSON.stringify(data))
+            },{emulateJSON: true}).then(function (res) {
+              console.log(res);
+              if(res.body==1000){
                 that.$message({
                   message:'请求成功！',
                   type:'success'
-                })
-            }else{
-              that.$message({
+                });
+                bus.$emit('curPage','main');
+              }else{
+                that.$message({
                   message:'请求失败！',
                   type:'error'
-              })
-            }
-        });
+                })
+              }
+            });
+          }else{
+            this.$http.post(globalPath+'/ManageMemo',{
+              model:'add',
+              userId:sessionStorage.userId,
+              memoJson:encodeURIComponent(JSON.stringify(data))
+            },{emulateJSON: true}).then(function (res) {
+              console.log(res);
+              if(res.body==1000){
+                that.$message({
+                  message:'请求成功！',
+                  type:'success'
+                });
+                bus.$emit('curPage','main');
+              }else{
+                that.$message({
+                  message:'请求失败！',
+                  type:'error'
+                })
+              }
+            });
+          }
+
       }
     },
   }

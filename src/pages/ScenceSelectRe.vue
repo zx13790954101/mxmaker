@@ -1,21 +1,26 @@
 <template>
-  <div class="scence">
+  <div class="scence-select-re">
     <!-- 顶部菜单 -->
-    <my-header>
+    <header>
       <div class="menu_item_box" slot="left">
-        <div class="menu_item">
-          <type-select @curName="setSceneStyles" :title="'风格'"
-                       :selectList="sceneStylesList"></type-select>
+        <div class="to_back" @click="toBack"><btn-icon text="返回" icon="icon-fanhui1"></btn-icon></div>
+
+        <div style="display:inline-block;padding-left: 60px;">
+          <div class="menu_item">
+            <type-select @curName="setSceneStyles" :title="'风格'"
+                         :selectList="sceneStylesList"></type-select>
+          </div>
+          <div class="menu_item">
+            <type-select @curName="setSceneAreas" :title="'区域'"
+                         :selectList="SceneAreasList"></type-select>
+          </div>
         </div>
-        <div class="menu_item">
-          <type-select @curName="setSceneAreas" :title="'区域'"
-                       :selectList="SceneAreasList"></type-select>
-        </div>
+
       </div>
       <div slot="right">
         <!--loading:{{loading}}-->
       </div>
-    </my-header>
+    </header>
 
     <div class="allScence" v-show="params.area==''">
       <div class="allScence_item" v-for="(item,index) in allScenceRe" v-if="item.list!=0">
@@ -54,8 +59,6 @@
           <div></div>
         </div>
       </div>
-      <!--暂无数据-->
-      <p class="no_data" v-if="!showLoading&&scenceList.length<1">暂无数据</p>
     </div>
 
   </div>
@@ -63,13 +66,14 @@
 
 <script>
   import GoodImg from '../components/GoodImg.vue'
-  import ImgLimitScence from '../components/ImgLimitScence.vue'
   import MyHeader from '../components/MyHeader.vue'
   import TypeSelect from '../components/TypeSelect.vue'
+  import BtnIcon from '../components/BtnIcon.vue'
   import bus from '../assets/bus'
+  import ImgLimitScence from '../components/ImgLimitScence.vue'
   export default {
-    name: 'scence',
-    components: {GoodImg, MyHeader, TypeSelect,ImgLimitScence},
+    name: 'scence-select-re',
+    components: {GoodImg, MyHeader, TypeSelect,BtnIcon,ImgLimitScence},
     data () {
       return {
         loading: false,
@@ -92,21 +96,22 @@
           area: '',
           style: '',
         },
-        allScence: [],
+        allScence: []
+
       }
     },
     computed:{
       allScenceRe(){
-          var that=this;
-          var ary=[];
-          $(this.SceneAreasList).each(function (index,ele) {
-            $(that.allScence).each(function (index2,ele2) {
-              if(ele2.area==ele.name){
-                ary.push(ele2);
-              }
-            });
+        var that=this;
+        var ary=[];
+        $(this.SceneAreasList).each(function (index,ele) {
+          $(that.allScence).each(function (index2,ele2) {
+            if(ele2.area==ele.name){
+              ary.push(ele2);
+            }
           });
-          return ary;
+        });
+        return ary;
       }
     },
     mounted: function () {
@@ -115,29 +120,45 @@
       this.GetSceneAreas();
       this.GetSceneStyles();
       //滚动看到加载图案是请求数据
-      $(window).scroll(function (e) {
-        if(bus.curIndex!=3) return;
+      $('.scence-select').scroll(function (e) {
+          console.log('scroll');
         if (!that.showLoading) return;
         if (that.loading) return;
-        if (!$('.loader')) return;
-        var loadTop = $('.loader').offset().top || 0;
+        if (!$('.scence-select .loader')) return;
+        var loadTop = $('.scence-select .loader').offset().top || 0;
+        console.log(loadTop,$('.scence-select').scrollTop() + $('.scence-select').height());
         if (loadTop) {
-          if ($(window).scrollTop() + $(window).height() - loadTop > 0) {
+          if ($('.scence-select').scrollTop() + $('.scence-select').height() - loadTop > 0) {
+            console.log('loading');
             that.loading = true;
             that.GetScenes();
           }
         }
+       /* var $this =$(this),
+          viewH =$(this).height(),//可见高度
+          contentH =$(this).get(0).scrollHeight,//内容高度
+          scrollTop =$(this).scrollTop();//滚动高度
+        //if(contentH - viewH - scrollTop <= 100) { //到达底部100px时,加载新内容
+        console.log(scrollTop/(contentH -viewH));
+        if(scrollTop/(contentH -viewH)>=0.95){ //到达底部100px时,加载新内容
+          console.log('loading');
+          that.loading = true;
+          that.GetScenes();
+        }*/
       });
     },
     methods: {
+      toBack(){
+        this.$emit('closeSelect',true);
+      },
       toSimulate:function(index){
-          console.log('当前index',index);
           var data={
               index:index,
               list:this.scenceList
           };
           sessionStorage.setItem('bgList',JSON.stringify(data));
-        bus.$emit('curPage','simulate');
+        this.$emit('bgListChange',data);
+        bus.$emit('curPage','simulateRe');
       },
       toSimulateAll:function(index,index2){
         var data={
@@ -145,7 +166,8 @@
           list:this.allScenceRe[index].list
         };
         sessionStorage.setItem('bgList',JSON.stringify(data));
-        bus.$emit('curPage','simulate');
+        this.$emit('bgListChange',data);
+        bus.$emit('curPage','simulate-re');
       },
       setSceneAreas: function (data) {
         this.params.area = data;
@@ -221,11 +243,11 @@
       },
       setAllscence: function (index, area, data) {
         //console.log(index, area, data);
-        var obj = {
+        var data = {
           area: area,
           list: data
         };
-        this.allScence.push(obj);
+        this.allScence.push(data);
         /*this.allScence[index]={
          area:area,
          data:data
@@ -247,8 +269,7 @@
           if (typeof(res.body) != 'object') {
             //that.$message.error('没有请求到数据');
           }
-          if(res.body==0||res.body.length<that.params.pageSize){
-            //that.$message.info('没有数据了');
+          if(res.body.length<that.params.pageSize||res==0){
             that.showLoading=false;
           }
           that.scenceList.push(...res.body);
@@ -269,9 +290,21 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .scence-select-re{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #ffffff;
+    z-index:100;
+    overflow-y:auto;
+    padding:60px 5px 5px;
+  }
   .good_list {
     overflow: hidden;
   }
+
 
   .col_reset {
     padding: 10px;
@@ -315,7 +348,12 @@
   .col_reset {
     padding: 5px;
   }
-
+  .to_back{
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 
   img {
     width: 100%;

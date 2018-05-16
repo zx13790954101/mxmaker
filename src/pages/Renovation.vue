@@ -263,6 +263,7 @@
     position: relative;
     top:50%;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     box-sizing: border-box;
     padding:0px 5px 0px 5px;
   }

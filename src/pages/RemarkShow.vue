@@ -2,13 +2,13 @@
   <div class="remark-show">
     <header>
       <div class="pull-left" @click="toBack">
-        <btn-icon text="返回" icon="icon-fanhui1" @click="buyAll"></btn-icon>
+        <btn-icon text="返回" icon="icon-fanhui1" ></btn-icon>
       </div>
-      <!--<div class="pull-right" @click="save">
-        <btn-icon text="保存" icon="icon-baocun"></btn-icon>
-      </div>-->
       <div class="pull-right" @click="buyAll">
         <btn-icon text="购买全部" icon="icon-finished-cart"></btn-icon>
+      </div>
+      <div class="pull-right" @click="toEdit">
+        <btn-icon text="编辑" icon="icon-bianji"></btn-icon>
       </div>
     </header>
     <div class="con" :style="{'background-image':'url('+detecte(bg)+')'}" :class="[imgWidth/imgHeight-conWidth/conHeight<0?'fill_x':'']">
@@ -62,6 +62,7 @@
         conHeight: 0,
         price:curRemark.memoImgList[0].price,
         goodsList: [],
+        goodsListRe: [],
         totalPrice:0
       }
     },
@@ -78,9 +79,23 @@
         that.conWidth=con.width();
         that.conHeight=con.height();
       });
-
+      setTimeout(function(){
+        $(window).trigger("resize");
+      },500);
     },
     methods: {
+      toEdit(){
+
+        var that=this;
+        $(that.goodList).each(function (index,element) {
+          that.$http.get(globalPath+'/GetGoodById', {params: {id:element.goodId,userId:sessionStorage.userId}}).then(function (res) {
+            var data=res.body;
+            data.goodNumer=1;
+            that.goodsListRe.push(data);
+            that.totalPrice=that.totalPrice+data.goodMoney;
+          })
+        });
+      },
       toDetail(index){
         var that = this;
         this.$http.get(globalPath+'/GetGoodById', {params: {id:that.goodList[index].goodId,userId:sessionStorage.userId}}).then(function (res) {
@@ -99,7 +114,7 @@
         var mUrl = url;
         var pattern = /http/ig;
         if (!pattern.test(url)) {
-          mUrl = 'http://7xo8yg.com1.z0.glb.clouddn.com/' + url;
+          mUrl = 'http://orbi0d8g8.bkt.clouddn.com/' + url;
         }
         return mUrl;
       },
@@ -135,10 +150,19 @@
                 type:'error'
               });
             }
-
-
           }
-      }
+      },
+      goodsListRe(val){
+        var that=this;
+        if(val.length==this.goodList.length){
+          var simulateRe={
+            bg:that.bg,
+            goodList:val
+          };
+          sessionStorage.setItem('simulateRe',JSON.stringify(simulateRe));
+          bus.$emit('curPage','simulate-re');
+        }
+      },
     }
   }
 </script>
@@ -166,7 +190,7 @@
   }
 
   .fill_x {
-    -webkit-background-size: 100% auto;
+    -webkit-background-size: 100%;
     background-size: 100% auto;
   }
 

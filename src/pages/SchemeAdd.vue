@@ -87,7 +87,7 @@
       return {
         mainName:'',
         mainImgList:[{
-            url:'http://7xo8yg.com1.z0.glb.clouddn.com/temp136789525111505480985385.jpg'
+            url:'http://orbi0d8g8.bkt.clouddn.com/temp136789525111505480985385.jpg'
         }],
           mainDetail:'hello world',
           selectedSite:[],

@@ -103,7 +103,7 @@
         var mUrl=url;
         var pattern=/http/ig;
         if(!pattern.test(url)){
-          mUrl='http://7xo8yg.com1.z0.glb.clouddn.com/'+url;
+          mUrl='http://orbi0d8g8.bkt.clouddn.com/'+url;
         }
         return mUrl;
       },
@@ -139,7 +139,7 @@
           setTimeout(function () {
             that.target.find('.imgUpload').ajaxSubmit(function (res) {
               //console.log(res);
-              var obj =  'http://7xo8yg.com1.z0.glb.clouddn.com/' + res.key;
+              var obj =  'http://orbi0d8g8.bkt.clouddn.com/' + res.key;
               that.imgList.push(obj);
               that.imgKeys.push(res.key);
               that.$emit('imgKeys', that.imgKeys);

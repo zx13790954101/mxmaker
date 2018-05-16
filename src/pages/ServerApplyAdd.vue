@@ -248,6 +248,10 @@
           this.$message.error('请选择商品！');
           return;
         }
+        /*if(that.applyList.length==0){
+          this.$message.error('没有选择配件！');
+          return;
+        }*/
         var apply=JSON.stringify({
           goodId:that.curGood.goodId||'',
           reason:reason,
